@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aryan Avinash Sawant — Portfolio</title>
+  <meta name="description"
+    content="Portfolio of Aryan Avinash Sawant – MSCS at USC, Computer Engineering graduate building intelligent systems and immersive experiences." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CDN (v3) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        fontFamily: {
+          mono: ['"JetBrains Mono"', 'monospace'],
+        },
+        extend: {
+          colors: {
+            midnight: '#0d1117',
+            surface: '#161b22',
+            card: '#1c2128',
+            border: '#30363d',
+            muted: '#8b949e',
+            accent: '#58a6ff',
+            accentHover: '#79c0ff',
+            glow: 'rgba(88,166,255,0.15)',
+            green: '#3fb950',
+            orange: '#d29922',
+            pink: '#f778ba',
+            purple: '#bc8cff',
+            red: '#f85149',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #0d1117;
+      color: #c9d1d9;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ────────────────────────────── */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0d1117;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #30363d;
+      border-radius: 3px;
+    }
+
+    /* ── Grain overlay ────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ── Glow cursor follower ─────────────────── */
+    #cursor-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle, rgba(88, 166, 255, 0.06) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: left 0.5s ease-out, top 0.5s ease-out;
+    }
+
+    /* ── Magnetic card effect ─────────────────── */
+    .magnetic-card {
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+      will-change: transform;
+    }
+
+    .magnetic-card:hover {
+      box-shadow: 0 0 40px rgba(88, 166, 255, 0.12), 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ── Fade-in on scroll ────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Nav link underline ───────────────────── */
+    .nav-link::after {
+      content: '';
+      display: block;
+      height: 2px;
+      width: 0;
+      background: #58a6ff;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* ── Skill pill glow ──────────────────────── */
+    .skill-pill {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-pill::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(88, 166, 255, 0.15), transparent 60%);
+    }
+
+    .skill-pill:hover::before {
+      opacity: 1;
+    }
+
+    /* ── Timeline ─────────────────────────────── */
+    .timeline-line {
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, #58a6ff, #30363d);
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #58a6ff;
+      background: #0d1117;
+      z-index: 1;
+    }
+
+    .timeline-dot::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: #58a6ff;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(0.6);
+      }
+    }
+
+    /* ── Typing cursor ────────────────────────── */
+    .typing-cursor::after {
+      content: '|';
+      animation: blink 1s step-end infinite;
+      color: #58a6ff;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* ── Section header decoration ────────────── */
+    .section-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #58a6ff;
+      padding: 4px 12px;
+      border: 1px solid rgba(88, 166, 255, 0.3);
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+
+    /* ── Contact form  ────────────────────────── */
+    .form-input {
+      background: #161b22;
+      border: 1px solid #30363d;
+      color: #c9d1d9;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      outline: none;
+      width: 100%;
+    }
+
+    .form-input:focus {
+      border-color: #58a6ff;
+      box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
+    }
+
+    /* ── Primary button ───────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: linear-gradient(135deg, #1f6feb, #58a6ff);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(88, 166, 255, 0.25);
+    }
+
+    /* ── Ghost button ─────────────────────────── */
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: transparent;
+      color: #58a6ff;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-ghost:hover {
+      border-color: #58a6ff;
+      background: rgba(88, 166, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    /* ── Particles ─────────────────────────────── */
+    #particles-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── Project tag colors ────────────────────── */
+    .tag-ai {
+      color: #bc8cff;
+      border-color: rgba(188, 140, 255, 0.3);
+      background: rgba(188, 140, 255, 0.08);
+    }
+
+    .tag-game {
+      color: #f778ba;
+      border-color: rgba(247, 120, 186, 0.3);
+      background: rgba(247, 120, 186, 0.08);
+    }
+
+    .tag-ml {
+      color: #3fb950;
+      border-color: rgba(63, 185, 80, 0.3);
+      background: rgba(63, 185, 80, 0.08);
+    }
+
+    .tag-web {
+      color: #58a6ff;
+      border-color: rgba(88, 166, 255, 0.3);
+      background: rgba(88, 166, 255, 0.08);
+    }
+
+    .tag-hw {
+      color: #d29922;
+      border-color: rgba(210, 153, 34, 0.3);
+      background: rgba(210, 153, 34, 0.08);
+    }
+  </style>
+</head>
+
+<body class="font-mono relative">
+
+  <!-- Cursor Glow -->
+  <div id="cursor-glow"></div>
+
+  <!-- Particles -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- ════════════════════════════════════════════
+       NAVIGATION
+       ════════════════════════════════════════════ -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+    style="background: rgba(13,17,23,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+    <div class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+      <a href="#hero" class="text-lg font-bold text-white tracking-tight hover:text-accent transition">
+        <span class="text-accent">&lt;</span>AAS<span class="text-accent"> /&gt;</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-muted">
+        <a href="#toolkit" class="nav-link hover:text-white transition">toolkit</a>
+        <a href="#projects" class="nav-link hover:text-white transition">projects</a>
+        <a href="#education" class="nav-link hover:text-white transition">education</a>
+        <a href="#contact" class="nav-link hover:text-white transition">contact</a>
+      </div>
+      <!-- Mobile menu button -->
+      <button id="mobile-menu-btn" class="md:hidden text-muted hover:text-white transition" aria-label="Toggle menu">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden border-t border-border px-6 pb-4 text-sm">
+      <a href="#toolkit" class="block py-2 text-muted hover:text-white transition">toolkit</a>
+      <a href="#projects" class="block py-2 text-muted hover:text-white transition">projects</a>
+      <a href="#education" class="block py-2 text-muted hover:text-white transition">education</a>
+      <a href="#contact" class="block py-2 text-muted hover:text-white transition">contact</a>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════════
+       HERO SECTION
+       ════════════════════════════════════════════ -->
+  <section id="hero" class="relative z-10 min-h-screen flex items-center justify-center px-6">
+    <div class="max-w-4xl text-center">
+      <!-- Terminal badge -->
+      <div
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-surface/50 text-xs text-muted mb-8">
+        <span class="w-2 h-2 rounded-full bg-green animate-pulse"></span>
+        <span>available for opportunities</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6">
+        Think. <span class="text-accent">Build.</span> <span
+          class="bg-gradient-to-r from-purple to-pink bg-clip-text text-transparent">Deploy.</span>
+      </h1>
+
+      <p class="text-base sm:text-lg text-muted max-w-2xl mx-auto mb-4 leading-relaxed">
+        <span class="text-accent font-semibold">Aryan Avinash Sawant</span> — Computer Engineering graduate pursuing an
+        <span class="text-white">MSCS at the University of Southern California</span>,
+        specializing in AI-driven software and interactive systems.
+      </p>
+
+      <p class="text-sm text-muted/60 font-light mb-10 typing-cursor" id="typed-text"></p>
+
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#projects" class="btn-primary">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4l8 8M12 4l-8 8" />
+          </svg>
+          View Work
+        </a>
+        <a href="#contact" class="btn-ghost">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 8h12M10 4l4 4-4 4" />
+          </svg>
+          Get in Touch
+        </a>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted/40 text-xs">
+        <span>scroll</span>
+        <div class="w-px h-8 bg-gradient-to-b from-muted/40 to-transparent animate-bounce"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       TECHNICAL TOOLKIT
+       ════════════════════════════════════════════ -->
+  <section id="toolkit" class="relative z-10 py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <span class="section-tag">// skills</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mt-3">Technical Toolkit</h2>
+        <p class="text-muted mt-3 max-w-lg mx-auto text-sm">Technologies I work with daily to build production-grade
+          systems.</p>
+      </div>
+
+      <!-- ── Languages (Large Cards) ── -->
+      <h3 class="text-xs uppercase tracking-widest text-muted mb-4 reveal">Languages</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-5 mb-12 reveal">
+        <div
+          class="skill-pill flex flex-col items-center gap-4 p-8 rounded-2xl border border-border bg-surface/60 hover:border-accent/40 transition-all duration-300 cursor-default"
+          data-category="Language">
+          <span class="text-4xl">🐍</span>
+          <span class="text-lg font-semibold text-white">Python</span>
+          <span class="text-[11px] text-muted uppercase tracking-wider">Language</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-4 p-8 rounded-2xl border border-border bg-surface/60 hover:border-accent/40 transition-all duration-300 cursor-default"
+          data-category="Language">
+          <span class="text-4xl">⚡</span>
+          <span class="text-lg font-semibold text-white">C++</span>
+          <span class="text-[11px] text-muted uppercase tracking-wider">Language</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-4 p-8 rounded-2xl border border-border bg-surface/60 hover:border-accent/40 transition-all duration-300 cursor-default"
+          data-category="Language">
+          <span class="text-4xl">🔧</span>
+          <span class="text-lg font-semibold text-white">C</span>
+          <span class="text-[11px] text-muted uppercase tracking-wider">Language</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-4 p-8 rounded-2xl border border-border bg-surface/60 hover:border-accent/40 transition-all duration-300 cursor-default"
+          data-category="Database">
+          <span class="text-4xl">🗄️</span>
+          <span class="text-lg font-semibold text-white">SQL</span>
+          <span class="text-[11px] text-muted uppercase tracking-wider">Database</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-4 p-8 rounded-2xl border border-border bg-surface/60 hover:border-accent/40 transition-all duration-300 cursor-default"
+          data-category="Language">
+          <span class="text-4xl">🌐</span>
+          <span class="text-lg font-semibold text-white">JavaScript</span>
+          <span class="text-[11px] text-muted uppercase tracking-wider">Language</span>
+        </div>
+      </div>
+
+      <!-- ── Frameworks, Libraries & Tools (Compact Cards) ── -->
+      <h3 class="text-xs uppercase tracking-widest text-muted mb-4 reveal">Frameworks, Libraries & Tools</h3>
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 reveal">
+        <div
+          class="skill-pill flex flex-col items-center gap-2 p-3.5 rounded-lg border border-border bg-surface/60 hover:border-purple/40 transition-all duration-300 cursor-default"
+          data-category="AI/ML">
+          <span class="text-lg">🧠</span>
+          <span class="text-xs font-medium text-white">TensorFlow</span>
+          <span class="text-[9px] text-purple uppercase tracking-wider">AI / ML</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-2 p-3.5 rounded-lg border border-border bg-surface/60 hover:border-purple/40 transition-all duration-300 cursor-default"
+          data-category="AI/ML">
+          <span class="text-lg">🔥</span>
+          <span class="text-xs font-medium text-white">PyTorch</span>
+          <span class="text-[9px] text-purple uppercase tracking-wider">AI / ML</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-2 p-3.5 rounded-lg border border-border bg-surface/60 hover:border-purple/40 transition-all duration-300 cursor-default"
+          data-category="AI/ML">
+          <span class="text-lg">👁️</span>
+          <span class="text-xs font-medium text-white">OpenCV</span>
+          <span class="text-[9px] text-purple uppercase tracking-wider">Vision</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-2 p-3.5 rounded-lg border border-border bg-surface/60 hover:border-green/40 transition-all duration-300 cursor-default"
+          data-category="Web">
+          <span class="text-lg">⚛️</span>
+          <span class="text-xs font-medium text-white">React</span>
+          <span class="text-[9px] text-green uppercase tracking-wider">Frontend</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-2 p-3.5 rounded-lg border border-border bg-surface/60 hover:border-green/40 transition-all duration-300 cursor-default"
+          data-category="Web">
+          <span class="text-lg">🟢</span>
+          <span class="text-xs font-medium text-white">Node.js</span>
+          <span class="text-[9px] text-green uppercase tracking-wider">Backend</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-2 p-3.5 rounded-lg border border-border bg-surface/60 hover:border-green/40 transition-all duration-300 cursor-default"
+          data-category="Web">
+          <span class="text-lg">📊</span>
+          <span class="text-xs font-medium text-white">Streamlit</span>
+          <span class="text-[9px] text-green uppercase tracking-wider">Data Apps</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-2 p-3.5 rounded-lg border border-border bg-surface/60 hover:border-pink/40 transition-all duration-300 cursor-default"
+          data-category="Framework">
+          <span class="text-lg">🎮</span>
+          <span class="text-xs font-medium text-white">Unity</span>
+          <span class="text-[9px] text-pink uppercase tracking-wider">Game Engine</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-2 p-3.5 rounded-lg border border-border bg-surface/60 hover:border-accent/40 transition-all duration-300 cursor-default"
+          data-category="Framework">
+          <span class="text-lg">💙</span>
+          <span class="text-xs font-medium text-white">Flutter</span>
+          <span class="text-[9px] text-accent uppercase tracking-wider">Mobile</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-2 p-3.5 rounded-lg border border-border bg-surface/60 hover:border-orange/40 transition-all duration-300 cursor-default"
+          data-category="Tool">
+          <span class="text-lg">🐙</span>
+          <span class="text-xs font-medium text-white">Git</span>
+          <span class="text-[9px] text-orange uppercase tracking-wider">VCS</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-2 p-3.5 rounded-lg border border-border bg-surface/60 hover:border-orange/40 transition-all duration-300 cursor-default"
+          data-category="Tool">
+          <span class="text-lg">🐳</span>
+          <span class="text-xs font-medium text-white">Docker</span>
+          <span class="text-[9px] text-orange uppercase tracking-wider">DevOps</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-2 p-3.5 rounded-lg border border-border bg-surface/60 hover:border-orange/40 transition-all duration-300 cursor-default"
+          data-category="Tool">
+          <span class="text-lg">🔌</span>
+          <span class="text-xs font-medium text-white">Arduino</span>
+          <span class="text-[9px] text-orange uppercase tracking-wider">Hardware</span>
+        </div>
+        <div
+          class="skill-pill flex flex-col items-center gap-2 p-3.5 rounded-lg border border-border bg-surface/60 hover:border-accent/40 transition-all duration-300 cursor-default"
+          data-category="Database">
+          <span class="text-lg">🐘</span>
+          <span class="text-xs font-medium text-white">PostgreSQL</span>
+          <span class="text-[9px] text-accent uppercase tracking-wider">Database</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       FEATURED PROJECTS
+       ════════════════════════════════════════════ -->
+  <section id="projects" class="relative z-10 py-28 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <span class="section-tag">// projects</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mt-3">Featured Work</h2>
+        <p class="text-muted mt-3 max-w-lg mx-auto text-sm">Selected projects spanning AI, privacy, game development,
+          and embedded systems.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- ── AI Career Copilot ──────────────── -->
+        <div class="magnetic-card group rounded-2xl border border-border bg-card/80 p-6 flex flex-col reveal"
+          data-magnetic>
+          <div class="flex items-center gap-3 mb-4">
+            <div
+              class="w-10 h-10 rounded-lg bg-purple/10 border border-purple/20 flex items-center justify-center text-lg">
+              🤖</div>
+            <div>
+              <h3 class="text-white font-semibold text-base">AI Career Copilot</h3>
+              <span class="text-xs text-muted">Full-Stack AI Application</span>
+            </div>
+          </div>
+          <p class="text-sm text-muted leading-relaxed flex-1 mb-5">
+            An intelligent job application assistant powered by the <span class="text-purple font-medium">Google Gemini
+              API</span>.
+            Performs semantic gap analysis between resumes and job descriptions, generates tailored cover letters,
+            and provides actionable career recommendations using advanced NLP.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-ai">Gemini API</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-ai">NLP</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-web">React</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-web">Flask</span>
+          </div>
+          <div class="flex items-center gap-3 text-xs">
+            <a href="https://github.com/aryanavi6802" target="_blank" rel="noopener"
+              class="text-accent hover:text-accentHover transition flex items-center gap-1">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 1v12M1 7l6-6 6 6" />
+              </svg>
+              View Code
+            </a>
+          </div>
+        </div>
+
+        <!-- ── Magnetic Polarity ──────────────── -->
+        <div class="magnetic-card group rounded-2xl border border-border bg-card/80 p-6 flex flex-col reveal"
+          data-magnetic>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-lg bg-pink/10 border border-pink/20 flex items-center justify-center text-lg">
+              🧲</div>
+            <div>
+              <h3 class="text-white font-semibold text-base">FLIP</h3>
+              <span class="text-xs text-muted">2D Platformer Game</span>
+            </div>
+          </div>
+          <p class="text-sm text-muted leading-relaxed flex-1 mb-5">
+            A creative platformer where players navigate levels using <span class="text-pink font-medium">magnetic
+              attraction and repulsion</span> mechanics.
+            Built with custom physics simulations for realistic force interactions, dynamic level design,
+            and polarity-switching puzzles that challenge spatial reasoning.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-game">Game Dev</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-game">Physics Engine</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-web">C#</span>
+          </div>
+          <div class="flex items-center gap-3 text-xs">
+            <a href="https://github.com/aryanavi6802" target="_blank" rel="noopener"
+              class="text-accent hover:text-accentHover transition flex items-center gap-1">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 1v12M1 7l6-6 6 6" />
+              </svg>
+              View Code
+            </a>
+          </div>
+        </div>
+
+        <!-- ── Animal Detection ───────────────── -->
+        <div class="magnetic-card group rounded-2xl border border-border bg-card/80 p-6 flex flex-col reveal"
+          data-magnetic>
+          <div class="flex items-center gap-3 mb-4">
+            <div
+              class="w-10 h-10 rounded-lg bg-green/10 border border-green/20 flex items-center justify-center text-lg">
+              🦊</div>
+            <div>
+              <h3 class="text-white font-semibold text-base">Animal Detection</h3>
+              <span class="text-xs text-muted">IoT + Computer Vision</span>
+            </div>
+          </div>
+          <p class="text-sm text-muted leading-relaxed flex-1 mb-5">
+            Real-time farm intrusion detection system using <span class="text-green font-medium">OpenCV</span> and
+            <span class="text-green font-medium">TensorFlow Object Detection API</span>.
+            Integrates with <span class="text-orange font-medium">Arduino</span> to trigger alarms and deterrents
+            when animals are detected breaching protected zones.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-ml">OpenCV</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-ml">TensorFlow</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-hw">Arduino</span>
+          </div>
+          <div class="flex items-center gap-3 text-xs">
+            <a href="https://github.com/aryanavi6802" target="_blank" rel="noopener"
+              class="text-accent hover:text-accentHover transition flex items-center gap-1">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 1v12M1 7l6-6 6 6" />
+              </svg>
+              View Code
+            </a>
+          </div>
+        </div>
+
+        <!-- ── Shop-SC ──────────────────────── -->
+        <div class="magnetic-card group rounded-2xl border border-border bg-card/80 p-6 flex flex-col reveal"
+          data-magnetic>
+          <div class="flex items-center gap-3 mb-4">
+            <div
+              class="w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-lg">
+              🛡️</div>
+            <div>
+              <h3 class="text-white font-semibold text-base">Shop-SC</h3>
+              <span class="text-xs text-muted">Privacy-First Marketplace</span>
+            </div>
+          </div>
+          <p class="text-sm text-muted leading-relaxed flex-1 mb-5">
+            A privacy-preserving <span class="text-accent font-medium">USC-only student marketplace</span> using
+            <span class="text-accent font-medium">Zero-Knowledge Proofs</span> for access control.
+            No PII stored — listings & chats keyed by stable pseudonyms.
+            Features an <span class="text-purple font-medium">AI chatbot (Tommy Trojan)</span> powered by Groq
+            that surfaces real listings with markdown responses and JWT-gated access.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-web">Next.js</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-web">Express</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-ai">ZKP</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-ai">Groq AI</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-ml">PostgreSQL</span>
+          </div>
+          <div class="flex items-center gap-3 text-xs">
+            <a href="https://github.com/aryanavi6802" target="_blank" rel="noopener"
+              class="text-accent hover:text-accentHover transition flex items-center gap-1">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 1v12M1 7l6-6 6 6" />
+              </svg>
+              View Code
+            </a>
+          </div>
+        </div>
+
+        <!-- ── Real Estate Website ─────────── -->
+        <div class="magnetic-card group rounded-2xl border border-border bg-card/80 p-6 flex flex-col reveal"
+          data-magnetic>
+          <div class="flex items-center gap-3 mb-4">
+            <div
+              class="w-10 h-10 rounded-lg bg-orange/10 border border-orange/20 flex items-center justify-center text-lg">
+              🏠</div>
+            <div>
+              <h3 class="text-white font-semibold text-base">Real Estate Platform</h3>
+              <span class="text-xs text-muted">Full-Stack Web Application</span>
+            </div>
+          </div>
+          <p class="text-sm text-muted leading-relaxed flex-1 mb-5">
+            A modern <span class="text-orange font-medium">real estate listing platform</span> with property search,
+            filtering, and detailed property pages.
+            Features responsive design, interactive maps, and an intuitive
+            UI for browsing and managing property listings.
+          </p>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-web">React</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-web">Node.js</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-ml">MongoDB</span>
+            <span class="text-[11px] px-2.5 py-1 rounded-full border tag-web">REST API</span>
+          </div>
+          <div class="flex items-center gap-3 text-xs">
+            <a href="https://github.com/aryanavi6802" target="_blank" rel="noopener"
+              class="text-accent hover:text-accentHover transition flex items-center gap-1">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 1v12M1 7l6-6 6 6" />
+              </svg>
+              View Code
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       EDUCATION
+       ════════════════════════════════════════════ -->
+  <section id="education" class="relative z-10 py-28 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <span class="section-tag">// education</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mt-3">Education</h2>
+        <p class="text-muted mt-3 max-w-lg mx-auto text-sm">Academic journey and areas of specialization.</p>
+      </div>
+
+      <div class="relative pl-12 reveal">
+        <div class="timeline-line"></div>
+
+        <!-- ── MSCS at USC ── -->
+        <div class="relative mb-14">
+          <div class="timeline-dot"></div>
+          <div
+            class="rounded-xl border border-border bg-card/60 p-6 hover:border-accent/30 transition-all duration-300">
+            <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
+              <div>
+                <h3 class="text-white font-semibold text-base">M.S. Computer Science</h3>
+                <span class="text-sm text-accent">University of Southern California</span>
+              </div>
+              <span class="text-xs text-muted bg-surface px-3 py-1 rounded-full border border-border">Jan 2025 — Dec
+                2026</span>
+            </div>
+            <ul class="text-sm text-muted space-y-2 list-none">
+              <li class="flex gap-2"><span class="text-accent mt-0.5">▸</span> Focus areas: Artificial Intelligence,
+                Natural Language Processing, Computer Vision.</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">▸</span> Coursework: Deep Learning, Analysis of
+                Algorithms, Database Systems, Software Engineering, Applied NLP, Web Technologies.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ── B.E. Computer Engineering ── -->
+        <div class="relative">
+          <div class="timeline-dot"></div>
+          <div
+            class="rounded-xl border border-border bg-card/60 p-6 hover:border-accent/30 transition-all duration-300">
+            <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
+              <div>
+                <h3 class="text-white font-semibold text-base">B.E. Computer Engineering</h3>
+                <span class="text-sm text-accent">University of Mumbai</span>
+              </div>
+              <span class="text-xs text-muted bg-surface px-3 py-1 rounded-full border border-border">June 2020 — July
+                2024</span>
+            </div>
+            <ul class="text-sm text-muted space-y-2 list-none">
+              <li class="flex gap-2"><span class="text-accent mt-0.5">▸</span> Coursework: Data Structures, Algorithms,
+                Operating Systems, Computer Networks, Object-Oriented Programming, Database Management, Machine
+                Learning, Artificial Intelligence.</li>
+              <li class="flex gap-2"><span class="text-accent mt-0.5">▸</span> Capstone projects in AI, IoT, and game
+                development.</li>
+              <li class="flex gap-2">
+                <span class="text-accent mt-0.5">▸</span>
+                <span><span class="text-purple font-medium">Research Publication:</span> Published paper at <span
+                    class="text-white font-medium">ICSTEM '24</span> (International Conference on Science, Technology,
+                  Engineering & Mathematics, 2024).</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       CONTACT
+       ════════════════════════════════════════════ -->
+  <section id="contact" class="relative z-10 py-28 px-6">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <span class="section-tag">// contact</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mt-3">Let's Connect</h2>
+        <p class="text-muted mt-3 max-w-lg mx-auto text-sm">Have a project in mind or want to chat? Drop me a message.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-5 gap-10 reveal">
+        <!-- Form -->
+        <form id="contact-form" class="md:col-span-3 space-y-5" onsubmit="handleSubmit(event)">
+          <div>
+            <label for="name" class="block text-xs text-muted mb-2 uppercase tracking-wider">Name</label>
+            <input id="name" type="text" class="form-input" placeholder="" required />
+          </div>
+          <div>
+            <label for="email" class="block text-xs text-muted mb-2 uppercase tracking-wider">Email</label>
+            <input id="email" type="email" class="form-input" placeholder="" required />
+          </div>
+          <div>
+            <label for="message" class="block text-xs text-muted mb-2 uppercase tracking-wider">Message</label>
+            <textarea id="message" rows="5" class="form-input resize-none" placeholder="Tell me about your project..."
+              required></textarea>
+          </div>
+          <button type="submit" class="btn-primary w-full justify-center">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 3l12 5-12 5V9l8-1-8-1z" />
+            </svg>
+            Send Message
+          </button>
+          <p id="form-status" class="text-sm text-center hidden"></p>
+        </form>
+
+        <!-- Socials -->
+        <div class="md:col-span-2 flex flex-col gap-4">
+          <a href="https://github.com/aryanavi6802" target="_blank" rel="noopener"
+            class="flex items-center gap-4 p-4 rounded-xl border border-border bg-card/50 hover:border-accent/40 transition-all duration-300 group">
+            <div class="w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+              <!-- GitHub SVG -->
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#c9d1d9">
+                <path
+                  d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+              </svg>
+            </div>
+            <div>
+              <span class="text-sm text-white font-medium group-hover:text-accent transition">GitHub</span>
+              <span class="block text-xs text-muted">@aryanavi6802</span>
+            </div>
+          </a>
+
+          <a href="https://www.linkedin.com/in/aryan-avinash-sawant1" target="_blank" rel="noopener"
+            class="flex items-center gap-4 p-4 rounded-xl border border-border bg-card/50 hover:border-accent/40 transition-all duration-300 group">
+            <div class="w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+              <!-- LinkedIn SVG -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#c9d1d9">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+            </div>
+            <div>
+              <span class="text-sm text-white font-medium group-hover:text-accent transition">LinkedIn</span>
+              <span class="block text-xs text-muted">/in/aryan-avinash-sawant1</span>
+            </div>
+          </a>
+
+          <a href="mailto:[EMAIL_ADDRESS]"
+            class="flex items-center gap-4 p-4 rounded-xl border border-border bg-card/50 hover:border-accent/40 transition-all duration-300 group">
+            <div class="w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+              <svg width="18" height="18" fill="none" stroke="#c9d1d9" stroke-width="1.5" viewBox="0 0 24 24">
+                <path
+                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+              </svg>
+            </div>
+            <div>
+              <span class="text-sm text-white font-medium group-hover:text-accent transition">Email</span>
+              <span class="block text-xs text-muted">aryansawant1230@gmail.com</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════ -->
+  <footer class="relative z-10 border-t border-border py-8 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
+      <span>&copy; 2026 Aryan Avinash Sawant. All rights reserved.</span>
+      <span>Designed & built with <span class="text-red">♥</span> and too much ☕</span>
+    </div>
+  </footer>
+
+  <!-- ════════════════════════════════════════════
+       SCRIPTS
+       ════════════════════════════════════════════ -->
+  <script>
+    // ── Cursor glow follow ───────────────────────
+    const glow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', (e) => {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top = e.clientY + 'px';
+    });
+
+    // ── Magnetic card effect ─────────────────────
+    document.querySelectorAll('[data-magnetic]').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        const strength = 0.04;
+        card.style.transform = `translate(${x * strength}px, ${y * strength}px) rotateX(${-y * 0.05}deg) rotateY(${x * 0.05}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translate(0, 0) rotateX(0) rotateY(0)';
+      });
+    });
+
+    // ── Skill pill glow follow ───────────────────
+    document.querySelectorAll('.skill-pill').forEach(pill => {
+      pill.addEventListener('mousemove', (e) => {
+        const rect = pill.getBoundingClientRect();
+        const mx = ((e.clientX - rect.left) / rect.width * 100);
+        const my = ((e.clientY - rect.top) / rect.height * 100);
+        pill.style.setProperty('--mx', mx + '%');
+        pill.style.setProperty('--my', my + '%');
+      });
+    });
+
+    // ── Scroll reveal ────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Typing effect ────────────────────────────
+    const phrases = [
+      'const focus = ["AI", "Systems", "Games"];',
+      'while (alive) { learn(); build(); ship(); }',
+      'git commit -m "building the future"',
+      'sudo apt-get install creativity',
+    ];
+    let phraseIdx = 0, charIdx = 0, deleting = false;
+    const typedEl = document.getElementById('typed-text');
+    function typeLoop() {
+      const current = phrases[phraseIdx];
+      if (!deleting) {
+        typedEl.textContent = current.substring(0, charIdx + 1);
+        charIdx++;
+        if (charIdx === current.length) {
+          deleting = true;
+          setTimeout(typeLoop, 2000);
+          return;
+        }
+        setTimeout(typeLoop, 60);
+      } else {
+        typedEl.textContent = current.substring(0, charIdx);
+        charIdx--;
+        if (charIdx < 0) {
+          deleting = false;
+          charIdx = 0;
+          phraseIdx = (phraseIdx + 1) % phrases.length;
+          setTimeout(typeLoop, 400);
+          return;
+        }
+        setTimeout(typeLoop, 30);
+      }
+    }
+    typeLoop();
+
+    // ── Navbar shrink on scroll ──────────────────
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.style.borderBottom = '1px solid #30363d';
+      } else {
+        navbar.style.borderBottom = 'none';
+      }
+    });
+
+    // ── Mobile menu toggle ───────────────────────
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+    });
+
+    // ── Contact form handler ─────────────────────
+    function handleSubmit(e) {
+      e.preventDefault();
+      const status = document.getElementById('form-status');
+      status.textContent = '✓ Message sent! I\'ll get back to you soon.';
+      status.className = 'text-sm text-center text-green';
+      status.classList.remove('hidden');
+      e.target.reset();
+      setTimeout(() => status.classList.add('hidden'), 4000);
+    }
+
+    // ── Floating particles ───────────────────────
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = (Math.random() - 0.5) * 0.3;
+        this.r = Math.random() * 1.5 + 0.5;
+        this.alpha = Math.random() * 0.3 + 0.05;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(88, 166, 255, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(88, 166, 255, ${0.04 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+  </script>
+
+</body>
+
+</html>
